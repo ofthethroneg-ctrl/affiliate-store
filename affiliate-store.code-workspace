@@ -1,0 +1,44 @@
+{
+  "folders": [
+    { "name": "Root", "path": "." },
+    { "name": "Backend", "path": "./backend" },
+    { "name": "Frontend", "path": "./frontend" }
+  ],
+  "settings": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.tabSize": 2,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/.git": true,
+      "**/build": true
+    },
+    "tailwindCSS.includeLanguages": { "javascript": "javascript", "javascriptreact": "javascriptreact" },
+    "emmet.includeLanguages": { "javascript": "javascriptreact" }
+  },
+  "extensions": {
+    "recommendations": [
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "dsznajder.es7-react-js-snippets",
+      "mongodb.mongodb-vscode",
+      "rangav.vscode-thunder-client",
+      "ms-azuretools.vscode-docker"
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Backend (Node.js)",
+        "type": "node",
+        "request": "launch",
+        "program": "${workspaceFolder}/backend/server.js",
+        "envFile": "${workspaceFolder}/backend/.env",
+        "restart": true,
+        "runtimeExecutable": "nodemon",
+        "console": "integratedTerminal"
+      }
+    ]
+  }
+}
