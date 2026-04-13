@@ -6,6 +6,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes');
@@ -23,27 +24,39 @@ app.use('/api/', rateLimit({
   max: 100,
 }));
 
-// CORS
+// ✅ FIXED CORS (FINAL)
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://localhost:5173'],
-  credentials: true
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    process.env.FRONTEND_URL, // 🔥 your vercel URL
+  ],
+  credentials: true,
 }));
 
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// ✅ SERVE STATIC IMAGES (IMPORTANT)
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
-// Health
+// Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK' });
 });
 
-// 404
+// Root route (optional)
+app.get('/', (req, res) => {
+  res.send('🚀 ShopElite Backend Running');
+});
+
+// 404 handler
 app.use('*', (req, res) => {
   res.status(404).json({ success: false, error: 'Route not found' });
 });

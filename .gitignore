@@ -1,8 +1,18 @@
 node_modules/
 .env
-build/
-dist/
-.DS_Store
-*.log
 .env.local
 .env.production
+
+# frontend
+frontend/node_modules
+frontend/dist
+frontend/build
+
+# backend
+backend/node_modules
+
+# logs
+*.log
+
+# OS
+.DS_Store
