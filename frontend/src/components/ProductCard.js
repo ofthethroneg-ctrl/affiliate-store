@@ -6,21 +6,32 @@ const ProductCard = ({ product }) => {
   const [imgError, setImgError] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ✅ FIXED BUY BUTTON LOGIC
+  // ✅ FIX: Handle image URL properly (local + production)
+  const getImageUrl = (url) => {
+    if (!url) return "";
+
+    // If already full URL (Cloudinary / Amazon / etc.)
+    if (url.startsWith("http")) return url;
+
+    // Backend base URL
+    const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+    return `${BASE_URL}${url}`;
+  };
+
+  // ✅ BUY BUTTON LOGIC
   const onBuyNow = () => {
     setLoading(true);
 
     let link = product.affiliateLink;
 
-    // 🔥 FIX: convert dl.flipkart → www.flipkart
-    if (link.includes("dl.flipkart.com")) {
+    // 🔥 Fix Flipkart short links
+    if (link && link.includes("dl.flipkart.com")) {
       link = link.replace("dl.flipkart.com/dl", "www.flipkart.com");
     }
 
-    // 🔥 OPTIONAL: log to debug
     console.log("Opening link:", link);
 
-    // ✅ SAFE redirect (works on iPhone + Android)
     setTimeout(() => {
       window.location.href = link;
       setLoading(false);
@@ -46,7 +57,7 @@ const ProductCard = ({ product }) => {
       <div className="relative overflow-hidden bg-[#151322] aspect-square">
         {!imgError ? (
           <img
-            src={product.imageUrl}
+            src={getImageUrl(product.imageUrl)}   // ✅ FIXED HERE
             alt={product.productName}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
